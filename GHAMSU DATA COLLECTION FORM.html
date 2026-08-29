@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHAMSU Student Data Collection Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1F4E78 0%, #2E5C8A 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1F4E78 0%, #2E5C8A 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 40px 30px;
+        }
+
+        .form-section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1F4E78;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #E8F0F8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #E74C3C;
+            margin-left: 4px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #E0E0E0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #1F4E78;
+            box-shadow: 0 0 0 3px rgba(31, 78, 120, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #E8F0F8;
+        }
+
+        button {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #27AE60 0%, #229954 100%);
+            color: white;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-clear {
+            background: linear-gradient(135deg, #F39C12 0%, #E67E22 100%);
+            color: white;
+        }
+
+        .btn-clear:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
+        }
+
+        .btn-export {
+            background: linear-gradient(135deg, #3498DB 0%, #2980B9 100%);
+            color: white;
+        }
+
+        .btn-export:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.success {
+            background: #D5F4E6;
+            color: #27AE60;
+            border-left: 4px solid #27AE60;
+        }
+
+        .alert.error {
+            background: #FADBD8;
+            color: #E74C3C;
+            border-left: 4px solid #E74C3C;
+        }
+
+        .counter {
+            font-size: 12px;
+            color: #7F8C8D;
+            margin-top: 5px;
+        }
+
+        .info-box {
+            background: #F0F8FF;
+            border-left: 4px solid #3498DB;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            font-size: 13px;
+            color: #2C3E50;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+
+            .form-container {
+                padding: 20px 15px;
+            }
+
+            .header {
+                padding: 25px 20px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+        }
+
+        .data-display {
+            background: #F8F9FA;
+            border: 1px solid #E8E8E8;
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 30px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .data-display h3 {
+            font-size: 14px;
+            color: #1F4E78;
+            margin-bottom: 15px;
+        }
+
+        .data-row {
+            background: white;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border-left: 4px solid #1F4E78;
+            font-size: 13px;
+        }
+
+        .data-row strong {
+            color: #1F4E78;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 GHAMSU Student Database</h1>
+            <p>Professional Data Collection Form</p>
+        </div>
+
+        <div class="form-container">
+            <div class="alert" id="successMessage"></div>
+            <div class="alert error" id="errorMessage"></div>
+
+            <div class="info-box">
+                ℹ️ Please fill in all <span class="required">*</span> required fields. Your data will be collected securely and added to the student database.
+            </div>
+
+            <form id="dataForm">
+                <!-- PERSONAL INFORMATION SECTION -->
+                <div class="form-section">
+                    <div class="section-title">👤 Personal Information</div>
+
+                    <div class="form-group">
+                        <label for="fullName">Full Name <span class="required">*</span></label>
+                        <input type="text" id="fullName" name="fullName" required placeholder="e.g., John Kwame Boateng">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="phone" name="phone" required placeholder="e.g., 0501234567">
+                            <div class="counter"><span id="phoneFormat">Format: 10-digit number</span></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="e.g., student@university.edu">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACADEMIC INFORMATION SECTION -->
+                <div class="form-section">
+                    <div class="section-title">🎓 Academic Information</div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="program">Program of Study <span class="required">*</span></label>
+                            <select id="program" name="program" required>
+                                <option value="">-- Select Program --</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                <option value="Civil Engineering">Civil Engineering</option>
+                                <option value="Electrical and Electronic Engineering">Electrical and Electronic Engineering</option>
+                                <option value="Computer Science and Engineering">Computer Science and Engineering</option>
+                                <option value="Geological Engineering">Geological Engineering</option>
+                                <option value="Geomatic Engineering">Geomatic Engineering</option>
+                                <option value="Environmental and Safety Engineering">Environmental and Safety Engineering</option>
+                                <option value="Data Science and Analytics">Data Science and Analytics</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="level">Level <span class="required">*</span></label>
+                            <select id="level" name="level" required>
+                                <option value="">-- Select Level --</option>
+                                <option value="Level 100">Level 100</option>
+                                <option value="Level 200">Level 200</option>
+                                <option value="Level 300">Level 300</option>
+                                <option value="Level 400">Level 400</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACCOMMODATION INFORMATION SECTION -->
+                <div class="form-section">
+                    <div class="section-title">🏠 Accommodation Information</div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hostelLocation">Hostel Location</label>
+                            <select id="hostelLocation" name="hostelLocation">
+                                <option value="">-- Select Location (Optional) --</option>
+                                <option value="Essikado">Essikado</option>
+                                <option value="BU">BU</option>
+                                <option value="Ketan">Ketan</option>
+                                <option value="Mempeasem">Mempeasem</option>
+                                <option value="Campus">Campus</option>
+                                <option value="Justmoh">Justmoh</option>
+                                <option value="Kojokrom">Kojokrom</option>
+                                <option value="Nkroful">Nkroful</option>
+                                <option value="On Campus">On Campus</option>
+                                <option value="Off Campus">Off Campus</option>
+                                <option value="Home">Home</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="hostelName">Hostel Name</label>
+                            <input type="text" id="hostelName" name="hostelName" placeholder="e.g., Zion Hostel, Hilton Hostel">
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="roomNumber">Room Number</label>
+                            <input type="text" id="roomNumber" name="roomNumber" placeholder="e.g., 301-A, Block 5">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADDITIONAL INFORMATION SECTION -->
+                <div class="form-section">
+                    <div class="section-title">📝 Additional Information</div>
+
+                    <div class="form-group">
+                        <label for="notes">Additional Notes</label>
+                        <textarea id="notes" name="notes" placeholder="Any additional information..."></textarea>
+                    </div>
+                </div>
+
+                <!-- BUTTONS -->
+                <div class="button-group">
+                    <button type="submit" class="btn-submit">✓ Submit Data</button>
+                    <button type="reset" class="btn-clear">↻ Clear Form</button>
+                    <button type="button" class="btn-export" onclick="exportData()">⬇ Export Records</button>
+                </div>
+            </form>
+
+            <!-- DATA DISPLAY -->
+            <div class="data-display" id="dataDisplay">
+                <h3>📊 Submitted Records (This Session)</h3>
+                <div id="recordsList">No records yet. Submit the form to see records here.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let submittedRecords = [];
+
+        // Phone number validation and formatting
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 10) {
+                value = value.slice(0, 10);
+            }
+            e.target.value = value;
+            
+            const phoneFormat = document.getElementById('phoneFormat');
+            if (value.length < 10) {
+                phoneFormat.textContent = `${value.length}/10 digits`;
+            } else {
+                phoneFormat.textContent = '✓ Valid phone number';
+                phoneFormat.style.color = '#27AE60';
+            }
+        });
+
+        // Form submission
+        document.getElementById('dataForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validate phone
+            const phone = document.getElementById('phone').value;
+            if (phone.length !== 10) {
+                showError('Phone number must be 10 digits');
+                return;
+            }
+
+            // Collect form data
+            const formData = {
+                id: submittedRecords.length + 1,
+                timestamp: new Date().toLocaleString(),
+                fullName: document.getElementById('fullName').value,
+                phone: phone,
+                email: document.getElementById('email').value,
+                program: document.getElementById('program').value,
+                level: document.getElementById('level').value,
+                hostelLocation: document.getElementById('hostelLocation').value,
+                hostelName: document.getElementById('hostelName').value,
+                roomNumber: document.getElementById('roomNumber').value,
+                notes: document.getElementById('notes').value
+            };
+
+            // Add to records
+            submittedRecords.push(formData);
+
+            // Show success message
+            showSuccess(`✓ Record #${formData.id} added successfully! ${formData.fullName} has been registered.`);
+
+            // Update display
+            updateRecordsDisplay();
+
+            // Reset form
+            this.reset();
+            document.getElementById('phoneFormat').textContent = 'Format: 10-digit number';
+            document.getElementById('phoneFormat').style.color = '#7F8C8D';
+
+            // Scroll to records
+            setTimeout(() => {
+                document.getElementById('dataDisplay').scrollIntoView({ behavior: 'smooth' });
+            }, 500);
+        });
+
+        function showSuccess(message) {
+            const alert = document.getElementById('successMessage');
+            alert.textContent = message;
+            alert.style.display = 'block';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+
+        function showError(message) {
+            const alert = document.getElementById('errorMessage');
+            alert.textContent = message;
+            alert.style.display = 'block';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+
+        function updateRecordsDisplay() {
+            const recordsList = document.getElementById('recordsList');
+            if (submittedRecords.length === 0) {
+                recordsList.innerHTML = 'No records yet. Submit the form to see records here.';
+                return;
+            }
+
+            recordsList.innerHTML = submittedRecords.map(record => `
+                <div class="data-row">
+                    <strong>#${record.id}</strong> | 
+                    <strong>${record.fullName}</strong> | 
+                    ${record.program} | 
+                    ${record.level} |
+                    <em>${record.timestamp}</em>
+                </div>
+            `).join('');
+        }
+
+        function exportData() {
+            if (submittedRecords.length === 0) {
+                showError('No records to export. Please submit some data first.');
+                return;
+            }
+
+            // Create CSV
+            let csv = 'ID,Timestamp,Full Name,Phone,Email,Program,Level,Hostel Location,Hostel Name,Room Number,Notes\n';
+            
+            submittedRecords.forEach(record => {
+                csv += `${record.id},"${record.timestamp}","${record.fullName}","${record.phone}","${record.email}","${record.program}","${record.level}","${record.hostelLocation}","${record.hostelName}","${record.roomNumber}","${record.notes}"\n`;
+            });
+
+            // Download CSV
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `GHAMSU_StudentData_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+
+            showSuccess(`✓ Exported ${submittedRecords.length} record(s) to CSV`);
+        }
+
+        // Initial display
+        updateRecordsDisplay();
+    </script>
+</body>
+</html>
